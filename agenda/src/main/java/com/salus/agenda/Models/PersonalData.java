@@ -1,12 +1,8 @@
 package com.salus.agenda.Models;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 @Embeddable
 public class PersonalData {
