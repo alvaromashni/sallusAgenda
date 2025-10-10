@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -16,10 +17,13 @@ public class Schedule {
     private LocalDate consultationDate;
     private String consultationDescription;
     @ManyToOne
+    @JoinColumn(name = "consultationCategory_id")
     private ConsultationCategory consultationCategory;
     @ManyToOne
+    @JoinColumn(name = "patient_id")
     private Patient patient;
     @ManyToOne
+    @JoinColumn(name = "professionalUser_id")
     private ProfessionalUser professionalUser;
 
     public Schedule() {
