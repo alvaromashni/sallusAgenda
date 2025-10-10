@@ -1,7 +1,6 @@
 package com.salus.agenda.Models;
 
 import java.time.LocalDate;
-
 import jakarta.persistence.Embeddable;
 
 @Embeddable
@@ -14,7 +13,8 @@ public class PersonalData {
     private String phoneNumber;
     private String password;
 
-    public PersonalData(String name, String cpf, String email, LocalDate birthDate, String gender, String phoneNumber) {
+    public PersonalData(String name, String cpf, String email, LocalDate birthDate, String gender,
+            String phoneNumber) {
         this.name = name;
         this.cpf = cpf;
         this.email = email;

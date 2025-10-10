@@ -1,6 +1,7 @@
 package com.salus.agenda.Models;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +16,8 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idSchedule;
     private LocalDate consultationDate;
+    private LocalTime consultationTime;
+
     private String consultationDescription;
     @ManyToOne
     @JoinColumn(name = "consultationCategory_id")
@@ -30,12 +33,14 @@ public class Schedule {
     }
 
     public Schedule(LocalDate consultationDate, String consultationDescription,
-            ConsultationCategory consultationCategory, Patient patient, ProfessionalUser professionalUser) {
+            ConsultationCategory consultationCategory, Patient patient, ProfessionalUser professionalUser,
+            LocalTime consultationTime) {
         this.consultationDate = consultationDate;
         this.consultationDescription = consultationDescription;
         this.consultationCategory = consultationCategory;
         this.patient = patient;
         this.professionalUser = professionalUser;
+        this.consultationTime = consultationTime;
     }
 
     public LocalDate getConsultationDate() {
@@ -81,4 +86,13 @@ public class Schedule {
     public long getIdSchedule() {
         return idSchedule;
     }
+
+    public LocalTime getConsultationTime() {
+        return consultationTime;
+    }
+
+    public void setConsultationTime(LocalTime consultationTime) {
+        this.consultationTime = consultationTime;
+    }
+
 }
