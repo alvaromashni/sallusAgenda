@@ -15,7 +15,7 @@ import jakarta.persistence.OneToMany;
 public class ProfessionalUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long IdProfessionalUser;
+    private long idProfessionalUser;
     @Embedded
     private PersonalData personalData;
     private String crm;
@@ -39,11 +39,11 @@ public class ProfessionalUser {
     }
 
     public long getIdProfessionalUser() {
-        return IdProfessionalUser;
+        return idProfessionalUser;
     }
 
     public void setIdProfessionalUser(long idProfessionalUser) {
-        IdProfessionalUser = idProfessionalUser;
+        this.idProfessionalUser = idProfessionalUser;
     }
 
     public PersonalData getPersonalData() {

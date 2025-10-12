@@ -11,8 +11,9 @@ import com.salus.agenda.Models.Schedule;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    boolean existsByProfessionalUserAndConsultationDateBetween(ProfessionalUser professionalUser, LocalDate date);
+    boolean existsByProfessionalUser_IdProfessionalUserAndConsultationDate(Long professionalUserId, LocalDate date);
 
-    List<Schedule> findAllByProfessionalUserAndConsultationDateBetween(ProfessionalUser professionalUser,
+    List<Schedule> findAllByProfessionalUserAndConsultationDate(ProfessionalUser professionalUser,
             LocalDate date);
+
 }
