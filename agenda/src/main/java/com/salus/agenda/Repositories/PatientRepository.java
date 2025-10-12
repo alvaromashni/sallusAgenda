@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.salus.agenda.Models.Patient;
 
 @Repository
-public interface PacientRepository extends JpaRepository<Patient, Long> {
+public interface PatientRepository extends JpaRepository<Patient, Long> {
     Optional<Patient> findByPersonalDataEmail(String email);
 }

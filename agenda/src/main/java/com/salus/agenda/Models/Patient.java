@@ -2,6 +2,8 @@ package com.salus.agenda.Models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ public class Patient {
     @Embedded
     private PersonalData personalData;
     @OneToMany(mappedBy = "patient")
+    @JsonIgnore
     private List<Schedule> schedules;
 
     public Patient() {
