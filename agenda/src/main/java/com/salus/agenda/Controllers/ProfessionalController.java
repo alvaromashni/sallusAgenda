@@ -1,6 +1,5 @@
 package com.salus.agenda.Controllers;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +8,9 @@ import com.salus.agenda.Dtos.ProfessionalRequestDto;
 import com.salus.agenda.Dtos.ProfessionalResponseDto;
 import com.salus.agenda.Models.ProfessionalUser;
 import com.salus.agenda.Services.ProfessionalUserService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -16,15 +18,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/professional")
 public class ProfessionalController {
     private final ProfessionalUserService professionalUserService;
-    private final ModelMapper modelMapper;
 
-    public ProfessionalController(ProfessionalUserService professionalUserService, ModelMapper modelMapper) {
+    public ProfessionalController(ProfessionalUserService professionalUserService) {
         this.professionalUserService = professionalUserService;
-        this.modelMapper = modelMapper;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerProfessional(@RequestBody ProfessionalRequestDto professionalDto) {
+    public ResponseEntity<?> registerProfessional(@RequestBody @Valid ProfessionalRequestDto professionalDto) {
         ProfessionalUser newProfessional = professionalUserService.registerProfessionalUser(professionalDto);
         ProfessionalResponseDto response = new ProfessionalResponseDto(
                 newProfessional.getIdProfessionalUser(),

@@ -1,12 +1,14 @@
 package com.salus.agenda.Services;
 
 import java.time.LocalDate;
-
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.salus.agenda.Dtos.ScheduleRequestDto;
+import com.salus.agenda.Exceptions.ResourceNotFoundException;
+import com.salus.agenda.Exceptions.ScheduleConflictException;
 import com.salus.agenda.Models.ConsultationCategory;
 import com.salus.agenda.Models.Patient;
 import com.salus.agenda.Models.ProfessionalUser;
@@ -35,12 +37,18 @@ public class ScheduleService {
     public Schedule registerSchedule(ScheduleRequestDto newSchedule) {
         Schedule schedule = new Schedule();
         ProfessionalUser professional = professionalRepository.findById(newSchedule.professionalUserId())
-                .orElseThrow(() -> new RuntimeException("Professional not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
         Patient patient = patientRepository.findById(newSchedule.patientId())
-                .orElseThrow(() -> new RuntimeException("Patient not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
         ConsultationCategory consultationCategory = consultationCategoryRepository
                 .findById(newSchedule.consultationCategoryId())
-                .orElseThrow(() -> new RuntimeException("Consultation category not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Consultation category not found!"));
+        if (hasConflict(professional, newSchedule.consultationDate(), newSchedule.consultationTime())) {
+            throw new ScheduleConflictException("This time slot is already booked!");
+        }
+        if (patientHasConflict(patient, newSchedule.consultationDate(), newSchedule.consultationTime())) {
+            throw new ScheduleConflictException("The patient already has an appointment at this time!");
+        }
         schedule.setConsultationCategory(consultationCategory);
         schedule.setConsultationDate(newSchedule.consultationDate());
         schedule.setConsultationTime(newSchedule.consultationTime());
@@ -57,4 +65,14 @@ public class ScheduleService {
     public List<Schedule> getSchedulesForTheDay(ProfessionalUser professionalUser, LocalDate date) {
         return scheduleRepository.findAllByProfessionalUserAndConsultationDate(professionalUser, date);
     }
+
+    public boolean hasConflict(ProfessionalUser professionalUser, LocalDate date, LocalTime time) {
+        return scheduleRepository.existsByProfessionalUserAndConsultationDateAndConsultationTime(professionalUser,
+                date, time);
+    }
+
+    public boolean patientHasConflict(Patient patient, LocalDate date, LocalTime time) {
+        return scheduleRepository.existsByPatientAndConsultationDateAndConsultationTime(patient, date, time);
+    }
+
 }

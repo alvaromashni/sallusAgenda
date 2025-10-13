@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.salus.agenda.Dtos.PatientRequestDto;
 import com.salus.agenda.Models.Patient;
-import com.salus.agenda.Models.PersonalData;
 import com.salus.agenda.Repositories.PatientRepository;
 
 @Service
@@ -23,6 +22,7 @@ public class PatientService {
     }
 
     public Patient createPacient(PatientRequestDto requestDto) {
+
         Patient newPatient = modelMapper.map(requestDto, Patient.class);
         newPatient.getPersonalData().setPassword(passwordEncoder.encode(requestDto.personalData().getPassword()));
         return patientRepository.save(newPatient);
