@@ -1,16 +1,34 @@
 package com.salus.agenda.Models;
 
 import java.time.LocalDate;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Embeddable
 public class PersonalData {
+    @Column(unique = true, nullable = false)
+    @NotBlank(message = "Field name can not be blank")
     private String name;
+    @Column(unique = true, nullable = false)
+    @Pattern(regexp = "\\d{11}", message = "Cpf must have exactly 11 digits")
     private String cpf;
+    @Email(message = "Invalid email format!")
+    @NotBlank(message = "Email field can not be blank!")
+    @Column(unique = true, nullable = false)
     private String email;
     private LocalDate birthDate;
     private String gender;
+    @Column(unique = true, nullable = false)
+    @NotBlank(message = "Field phoneNumber can not be blank")
     private String phoneNumber;
+    @Column(nullable = false)
+    @NotBlank(message = "Field password can not be blank")
+    @Size(min = 8, message = "Password must have at least 8 digits")
     private String password;
 
     public PersonalData(String name, String cpf, String email, LocalDate birthDate, String gender,

@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class ProfessionalUser {
@@ -18,8 +20,14 @@ public class ProfessionalUser {
     private long idProfessionalUser;
     @Embedded
     private PersonalData personalData;
+    @NotBlank(message = "Field crm can not be blank")
+    @Column(unique = true, nullable = false)
     private String crm;
+    @NotBlank(message = "Field occupation can not be blank")
+    @Column(nullable = false)
     private String occupation;
+    @NotBlank(message = "Field expertise can not be blank")
+    @Column(nullable = false)
     private String expertise;
     @OneToMany(mappedBy = "professionalUser")
     @JsonIgnore

@@ -1,5 +1,7 @@
 package com.salus.agenda.Dtos;
 
-public record PatientRequestDto() {
+import com.salus.agenda.Models.PersonalData;
+
+public record PatientRequestDto(PersonalData personalData) {
 
 }
