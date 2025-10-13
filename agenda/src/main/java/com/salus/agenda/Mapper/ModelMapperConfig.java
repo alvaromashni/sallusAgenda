@@ -1,12 +1,9 @@
-package com.salus.agenda.Mappers;
+package com.salus.agenda.Mapper;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.record.RecordModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.salus.agenda.Dtos.PatientRequestDto;
-import com.salus.agenda.Models.Patient;
 
 @Configuration
 public class ModelMapperConfig {

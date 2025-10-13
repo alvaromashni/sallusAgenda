@@ -8,6 +8,7 @@ import com.salus.agenda.Services.PatientService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class PatientController {
     @PostMapping("/register")
     public ResponseEntity<?> registerPatientSchedule(@RequestBody @Valid PatientRequestDto patient) {
         patientService.createPacient(patient);
-        return ResponseEntity.ok(patient);
+        return ResponseEntity.status(HttpStatus.CREATED).body(patient);
     }
 
 }
