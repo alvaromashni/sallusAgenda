@@ -3,8 +3,10 @@ package com.salus.agenda.Controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.salus.agenda.Models.Patient;
+import com.salus.agenda.Dtos.PatientRequestDto;
 import com.salus.agenda.Services.PatientService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,7 @@ public class PatientController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerPatientSchedule(@RequestBody Patient patient) {
+    public ResponseEntity<?> registerPatientSchedule(@RequestBody @Valid PatientRequestDto patient) {
         patientService.createPacient(patient);
         return ResponseEntity.ok(patient);
     }
