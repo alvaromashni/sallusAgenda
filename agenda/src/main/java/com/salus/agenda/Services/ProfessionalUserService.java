@@ -1,13 +1,12 @@
 package com.salus.agenda.Services;
 
-import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.salus.agenda.Dtos.ProfessionalRequestDto;
 import com.salus.agenda.Exceptions.ProfessionalConflictException;
+import com.salus.agenda.Exceptions.ResourceNotFoundException;
 import com.salus.agenda.Models.ProfessionalUser;
 import com.salus.agenda.Repositories.ProfessionalRepository;
 
@@ -40,11 +39,14 @@ public class ProfessionalUserService {
         return professionalRepository.save(newProfessional);
     }
 
-    public ProfessionalUser uptadeProfessionalData(Long professionalId, ProfessionalUser updatedProfessional) {
-        Optional<ProfessionalUser> professionalUser = professionalRepository.findById(professionalId);
-        if (professionalUser.isEmpty()) {
+    public ProfessionalUser uptadeProfessionalData(Long professionalId, ProfessionalRequestDto professionalDto) {
+        ProfessionalUser professionalUser = professionalRepository.findById(professionalId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(professionalDto, professionalUser);
+        if (professionalDto.personalData() != null) {
+            modelMapper.map(professionalDto.personalData(), professionalUser.getPersonalData());
         }
-
-        return new ProfessionalUser();
+        return professionalRepository.save(professionalUser);
     }
 }

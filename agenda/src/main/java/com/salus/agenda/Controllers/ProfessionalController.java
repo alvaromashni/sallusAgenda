@@ -10,9 +10,10 @@ import com.salus.agenda.Models.ProfessionalUser;
 import com.salus.agenda.Services.ProfessionalUserService;
 
 import jakarta.validation.Valid;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/professional")
@@ -36,6 +37,16 @@ public class ProfessionalController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
 
+    }
+
+    @PutMapping("update/{id}")
+    public ResponseEntity<?> putMethodName(@PathVariable Long id, @RequestBody ProfessionalRequestDto professionalDto) {
+        try {
+            professionalUserService.uptadeProfessionalData(id, professionalDto);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }
