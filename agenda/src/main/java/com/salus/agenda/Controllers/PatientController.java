@@ -26,9 +26,9 @@ public class PatientController {
     public ResponseEntity<?> registerPatientSchedule(@RequestBody @Valid PatientRequestDto patient) {
         try {
             patientService.createPacient(patient);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            return ResponseEntity.status(HttpStatus.CREATED).body(patient);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
 
     }

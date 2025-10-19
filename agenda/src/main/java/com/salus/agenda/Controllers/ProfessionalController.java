@@ -25,13 +25,17 @@ public class ProfessionalController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerProfessional(@RequestBody @Valid ProfessionalRequestDto professionalDto) {
-        ProfessionalUser newProfessional = professionalUserService.registerProfessionalUser(professionalDto);
-        ProfessionalResponseDto response = new ProfessionalResponseDto(
-                newProfessional.getIdProfessionalUser(),
-                newProfessional.getCrm(),
-                newProfessional.getPersonalData().getName());
+        try {
+            ProfessionalUser newProfessional = professionalUserService.registerProfessionalUser(professionalDto);
+            ProfessionalResponseDto response = new ProfessionalResponseDto(
+                    newProfessional.getIdProfessionalUser(),
+                    newProfessional.getCrm(),
+                    newProfessional.getPersonalData().getName());
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 }
