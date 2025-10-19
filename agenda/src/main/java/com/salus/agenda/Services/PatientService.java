@@ -23,6 +23,13 @@ public class PatientService {
 
     public Patient createPacient(PatientRequestDto requestDto) {
 
+        if (patientRepository.existsByPersonalDataCpf(requestDto.personalData().getCpf())) {
+            throw new RuntimeException("This cpf has already been registered!");
+        } else if (patientRepository.existsByPersonalDataEmail(requestDto.personalData().getEmail())) {
+            throw new RuntimeException("This email has already been registered!");
+        } else if (patientRepository.existsByPersonalDataName(requestDto.personalData().getName())) {
+            throw new RuntimeException("This name has already been registered!");
+        }
         Patient newPatient = modelMapper.map(requestDto, Patient.class);
         newPatient.getPersonalData().setPassword(passwordEncoder.encode(requestDto.personalData().getPassword()));
         return patientRepository.save(newPatient);

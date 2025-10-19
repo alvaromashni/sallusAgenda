@@ -24,8 +24,13 @@ public class PatientController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerPatientSchedule(@RequestBody @Valid PatientRequestDto patient) {
-        patientService.createPacient(patient);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        try {
+            patientService.createPacient(patient);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+        }
+
     }
 
 }

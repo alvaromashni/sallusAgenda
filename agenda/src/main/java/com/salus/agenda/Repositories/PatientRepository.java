@@ -10,4 +10,10 @@ import com.salus.agenda.Models.Patient;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
     Optional<Patient> findByPersonalDataEmail(String email);
+
+    boolean existsByPersonalDataEmail(String email);
+
+    boolean existsByPersonalDataName(String name);
+
+    boolean existsByPersonalDataCpf(String cpf);
 }
