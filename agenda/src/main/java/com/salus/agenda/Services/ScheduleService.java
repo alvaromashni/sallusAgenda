@@ -34,8 +34,17 @@ public class ScheduleService {
 
     }
 
+    public boolean hasConflict(ProfessionalUser professionalUser, LocalDate date, LocalTime time) {
+        return scheduleRepository.existsByProfessionalUserAndConsultationDateAndConsultationTime(professionalUser,
+                date, time);
+    }
+
+    public boolean patientHasConflict(Patient patient, LocalDate date, LocalTime time) {
+        return scheduleRepository.existsByPatientAndConsultationDateAndConsultationTime(patient, date, time);
+    }
+
     public Schedule registerSchedule(ScheduleRequestDto newSchedule) {
-        Schedule schedule = new Schedule();
+
         ProfessionalUser professional = professionalRepository.findById(newSchedule.professionalUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
         Patient patient = patientRepository.findById(newSchedule.patientId())
@@ -49,11 +58,13 @@ public class ScheduleService {
         if (patientHasConflict(patient, newSchedule.consultationDate(), newSchedule.consultationTime())) {
             throw new ScheduleConflictException("The patient already has an appointment at this time!");
         }
-        schedule.setConsultationCategory(consultationCategory);
-        schedule.setConsultationDate(newSchedule.consultationDate());
-        schedule.setConsultationTime(newSchedule.consultationTime());
-        schedule.setPatient(patient);
-        schedule.setProfessionalUser(professional);
+        Schedule schedule = new Schedule(
+                newSchedule.consultationDate(),
+                newSchedule.consultationDescription(),
+                consultationCategory,
+                patient,
+                professional,
+                newSchedule.consultationTime());
         return scheduleRepository.save(schedule);
     }
 
@@ -64,15 +75,6 @@ public class ScheduleService {
 
     public List<Schedule> getSchedulesForTheDay(ProfessionalUser professionalUser, LocalDate date) {
         return scheduleRepository.findAllByProfessionalUserAndConsultationDate(professionalUser, date);
-    }
-
-    public boolean hasConflict(ProfessionalUser professionalUser, LocalDate date, LocalTime time) {
-        return scheduleRepository.existsByProfessionalUserAndConsultationDateAndConsultationTime(professionalUser,
-                date, time);
-    }
-
-    public boolean patientHasConflict(Patient patient, LocalDate date, LocalTime time) {
-        return scheduleRepository.existsByPatientAndConsultationDateAndConsultationTime(patient, date, time);
     }
 
 }

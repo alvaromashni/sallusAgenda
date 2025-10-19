@@ -10,4 +10,12 @@ import com.salus.agenda.Models.ProfessionalUser;
 @Repository
 public interface ProfessionalRepository extends JpaRepository<ProfessionalUser, Long> {
     Optional<ProfessionalUser> findByPersonalDataEmail(String email);
+
+    boolean existsByPersonalDataEmail(String email);
+
+    boolean existsByPersonalDataName(String name);
+
+    boolean existsByPersonalDataCpf(String cpf);
+
+    boolean existsByCrm(String crm);
 }
