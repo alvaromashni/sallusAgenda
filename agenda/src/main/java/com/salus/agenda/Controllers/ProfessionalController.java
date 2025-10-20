@@ -40,7 +40,8 @@ public class ProfessionalController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<?> putMethodName(@PathVariable Long id, @RequestBody ProfessionalRequestDto professionalDto) {
+    public ResponseEntity<?> updateProfessionalData(@PathVariable Long id,
+            @RequestBody ProfessionalRequestDto professionalDto) {
         try {
             professionalUserService.uptadeProfessionalData(id, professionalDto);
             return ResponseEntity.status(HttpStatus.OK).build();

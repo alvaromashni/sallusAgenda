@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.salus.agenda.Dtos.PatientRequestDto;
+import com.salus.agenda.Exceptions.ResourceNotFoundException;
 import com.salus.agenda.Models.Patient;
 import com.salus.agenda.Repositories.PatientRepository;
 
@@ -33,5 +34,13 @@ public class PatientService {
         Patient newPatient = modelMapper.map(requestDto, Patient.class);
         newPatient.getPersonalData().setPassword(passwordEncoder.encode(requestDto.personalData().getPassword()));
         return patientRepository.save(newPatient);
+    }
+
+    public Patient updatePatientData(Long id, PatientRequestDto requestDto) {
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(requestDto.personalData(), patient.getPersonalData());
+        return patientRepository.save(patient);
     }
 }
