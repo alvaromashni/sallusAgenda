@@ -1,6 +1,7 @@
 package com.salus.agenda.Models;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,8 +17,8 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 public class ProfessionalUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idProfessionalUser;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID idProfessionalUser;
     @Embedded
     private PersonalData personalData;
     @NotBlank(message = "Field crm can not be blank")
@@ -46,11 +47,11 @@ public class ProfessionalUser {
 
     }
 
-    public long getIdProfessionalUser() {
+    public UUID getIdProfessionalUser() {
         return idProfessionalUser;
     }
 
-    public void setIdProfessionalUser(long idProfessionalUser) {
+    public void setIdProfessionalUser(UUID idProfessionalUser) {
         this.idProfessionalUser = idProfessionalUser;
     }
 

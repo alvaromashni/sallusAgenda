@@ -69,12 +69,20 @@ public class ScheduleService {
     }
 
     public boolean hasSchedulesForTheDay(Long professionalUserId, LocalDate day) {
+        ProfessionalUser professionalUser = professionalRepository.findById(professionalUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
         return scheduleRepository.existsByProfessionalUser_IdProfessionalUserAndConsultationDate(professionalUserId,
                 day);
     }
 
-    public List<Schedule> getSchedulesForTheDay(ProfessionalUser professionalUser, LocalDate date) {
-        return scheduleRepository.findAllByProfessionalUserAndConsultationDate(professionalUser, date);
+    //public List<Schedule> getSchedulesForTheDay(ProfessionalUser professionalUser, LocalDate date) {
+        //ProfessionalUser profUser = professionalRepository.findById(professionalUser.getIdProfessionalUser())
+                //.orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
+        //return scheduleRepository.findAllByProfessionalUserAndConsultationDate(professionalUser, date);
+    //}
+    public void deleteSchedule(Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Schedule not found!"));
+        scheduleRepository.delete(schedule);
     }
-
 }

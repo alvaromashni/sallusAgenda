@@ -44,13 +44,8 @@ public class PatientController {
     public ResponseEntity<?> updatePatientData(@PathVariable Long id, @RequestBody PatientRequestDto patientDto) {
         try {
             Patient updatedPatient = patientService.updatePatientData(id, patientDto);
-            PatientResponseDto responseDto = new PatientResponseDto(
-                    updatedPatient.getIdPatient(),
-                    patientDto.personalData().getName(),
-                    patientDto.personalData().getEmail()
-
-            );
-            return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+            
+            return ResponseEntity.status(HttpStatus.OK).body(updatedPatient);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

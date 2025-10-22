@@ -1,6 +1,8 @@
 package com.salus.agenda.Models;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -14,20 +16,24 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Patient {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idPatient;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID idPatient;
     @Embedded
     private PersonalData personalData;
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
     private List<Schedule> schedules;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private boolean active = true;
 
     public Patient() {
     }
 
-    public Patient(PersonalData personalData, List<Schedule> schedules) {
+    public Patient(PersonalData personalData, List<Schedule> schedules, boolean active, LocalDateTime createdAt) {
         this.personalData = personalData;
         this.schedules = schedules;
+        this.active = active;
+        this.createdAt = createdAt;
     }
 
     public PersonalData getPersonalData() {
@@ -38,8 +44,11 @@ public class Patient {
         this.personalData = personalData;
     }
 
-    public long getIdPatient() {
+    public UUID getIdPatient() {
         return idPatient;
+    }
+    public void setIdPatient(UUID idPatient) {
+        this.idPatient = idPatient;
     }
 
     public List<Schedule> getSchedules() {
@@ -49,4 +58,5 @@ public class Patient {
     public void setSchedules(List<Schedule> schedules) {
         this.schedules = schedules;
     }
+    
 }
