@@ -3,11 +3,8 @@ package com.salus.agenda.Services;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import com.salus.agenda.Dtos.ScheduleRequestDto;
