@@ -3,7 +3,6 @@ package com.salus.agenda.Controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.salus.agenda.Dtos.ScheduleRequestDto;
-import com.salus.agenda.Repositories.ProfessionalRepository;
 import com.salus.agenda.Services.ScheduleService;
 
 import java.time.LocalDate;
@@ -24,27 +23,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/schedule")
 public class ScheduleController {
     private final ScheduleService scheduleService;
-    private final ProfessionalRepository professionalRepository;
-
-    public ScheduleController(ScheduleService scheduleService, ProfessionalRepository professionalRepository) {
+    public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
-        this.professionalRepository = professionalRepository;
+        
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerSchedule(@RequestBody ScheduleRequestDto schedule) {
-        scheduleService.registerSchedule(schedule);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        try{
+            scheduleService.registerSchedule(schedule);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+        
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteSchedule(@PathVariable Long id) {
-        scheduleService.deleteSchedule(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        try {
+             scheduleService.deleteSchedule(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+       
     }
     @GetMapping("/isScheduled")
-    public Map<LocalDate, Boolean> isScheduled(@RequestParam LocalDate day, @RequestParam UUID professionalUserId) {
-        
-        return scheduleService.isSchedulesForTheDay(professionalUserId, day);
+    public ResponseEntity<Map<LocalDate, Boolean>> isScheduled(@RequestParam LocalDate day, @RequestParam UUID professionalUserId) {
+        try {
+             return ResponseEntity.ok(scheduleService.isSchedulesForTheDay(professionalUserId, day));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+       
     }
     
     
