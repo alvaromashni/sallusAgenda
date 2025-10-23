@@ -1,5 +1,6 @@
 package com.salus.agenda.Models;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,17 +31,22 @@ public class ProfessionalUser {
     @NotBlank(message = "Field expertise can not be blank")
     @Column(nullable = false)
     private String expertise;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private boolean active = true;
     @OneToMany(mappedBy = "professionalUser")
     @JsonIgnore
     private List<Schedule> schedules;
 
     public ProfessionalUser(PersonalData personalData, String crm, String occupation, String expertise,
-            List<Schedule> schedules) {
+            List<Schedule> schedules, UUID idProfessionalUser, LocalDateTime createdAt, boolean active) {
         this.personalData = personalData;
         this.crm = crm;
         this.occupation = occupation;
         this.expertise = expertise;
         this.schedules = schedules;
+        this.idProfessionalUser = idProfessionalUser;
+        this.createdAt = createdAt;
+        this.active = active;
     }
 
     public ProfessionalUser() {
@@ -95,4 +101,20 @@ public class ProfessionalUser {
         this.schedules = schedules;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
 }

@@ -1,5 +1,7 @@
 package com.salus.agenda.Services;
 
+import java.util.UUID;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,7 +38,7 @@ public class PatientService {
         return patientRepository.save(newPatient);
     }
 
-    public Patient updatePatientData(Long id, PatientRequestDto requestDto) {
+    public Patient updatePatientData(UUID id, PatientRequestDto requestDto) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
         modelMapper.getConfiguration().setSkipNullEnabled(true);

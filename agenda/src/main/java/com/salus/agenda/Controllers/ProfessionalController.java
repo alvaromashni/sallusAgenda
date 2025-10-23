@@ -1,5 +1,7 @@
 package com.salus.agenda.Controllers;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +30,7 @@ public class ProfessionalController {
     public ResponseEntity<?> registerProfessional(@RequestBody @Valid ProfessionalRequestDto professionalDto) {
         try {
             ProfessionalUser newProfessional = professionalUserService.registerProfessionalUser(professionalDto);
-            ProfessionalResponseDto response = new ProfessionalResponseDto(
-                    newProfessional.getIdProfessionalUser(),
-                    newProfessional.getCrm(),
-                    newProfessional.getPersonalData().getName());
+            ProfessionalResponseDto response = new ProfessionalResponseDto(newProfessional.getPersonalData().getName());
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
@@ -40,7 +39,7 @@ public class ProfessionalController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<?> updateProfessionalData(@PathVariable Long id,
+    public ResponseEntity<?> updateProfessionalData(@PathVariable UUID id,
             @RequestBody ProfessionalRequestDto professionalDto) {
         try {
             professionalUserService.uptadeProfessionalData(id, professionalDto);

@@ -3,9 +3,9 @@ package com.salus.agenda.Repositories;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.salus.agenda.Models.Patient;
@@ -15,7 +15,7 @@ import com.salus.agenda.Models.Schedule;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    boolean existsByProfessionalUser_IdProfessionalUserAndConsultationDate(Long professionalUserId, LocalDate date);
+    boolean existsByProfessionalUser_IdProfessionalUserAndConsultationDate(UUID professionalUserId, LocalDate date);
 
     List<Schedule> findAllByProfessionalUserAndConsultationDate(ProfessionalUser professionalUser,
             LocalDate date);

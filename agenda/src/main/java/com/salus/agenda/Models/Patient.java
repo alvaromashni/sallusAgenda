@@ -29,11 +29,12 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(PersonalData personalData, List<Schedule> schedules, boolean active, LocalDateTime createdAt) {
+    public Patient(PersonalData personalData, List<Schedule> schedules, boolean active, LocalDateTime createdAt, UUID idPatient) {
         this.personalData = personalData;
         this.schedules = schedules;
         this.active = active;
         this.createdAt = createdAt;
+        this.idPatient = idPatient;
     }
 
     public PersonalData getPersonalData() {
@@ -58,5 +59,22 @@ public class Patient {
     public void setSchedules(List<Schedule> schedules) {
         this.schedules = schedules;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
     
 }

@@ -2,8 +2,12 @@ package com.salus.agenda.Services;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import com.salus.agenda.Dtos.ScheduleRequestDto;
@@ -68,11 +72,18 @@ public class ScheduleService {
         return scheduleRepository.save(schedule);
     }
 
-    public boolean hasSchedulesForTheDay(Long professionalUserId, LocalDate day) {
+    public Map<LocalDate, Boolean> isSchedulesForTheDay(UUID professionalUserId, LocalDate day) {
         ProfessionalUser professionalUser = professionalRepository.findById(professionalUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
-        return scheduleRepository.existsByProfessionalUser_IdProfessionalUserAndConsultationDate(professionalUserId,
-                day);
+        Map<LocalDate, Boolean> map = new HashMap<>();
+        for(int i =1; i <= day.lengthOfMonth(); i++) {
+            LocalDate currentDate = day.withDayOfMonth(i);
+            boolean verdadeiro = scheduleRepository.existsByProfessionalUser_IdProfessionalUserAndConsultationDate(professionalUserId,
+                    currentDate);
+            map.put(currentDate, verdadeiro);
+        }
+        return map;
+        
     }
 
     //public List<Schedule> getSchedulesForTheDay(ProfessionalUser professionalUser, LocalDate date) {

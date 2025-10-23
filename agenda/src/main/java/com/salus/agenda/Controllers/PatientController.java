@@ -4,13 +4,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.salus.agenda.Dtos.PatientRequestDto;
-import com.salus.agenda.Dtos.PatientResponseDto;
 import com.salus.agenda.Models.Patient;
 import com.salus.agenda.Services.PatientService;
 
 import jakarta.validation.Valid;
 
-import org.modelmapper.ModelMapper;
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +22,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/patient")
 public class PatientController {
     private final PatientService patientService;
-    private final ModelMapper modelMapper;
+    
 
-    public PatientController(PatientService patientService, ModelMapper modelMapper) {
+    public PatientController(PatientService patientService) {
         this.patientService = patientService;
-        this.modelMapper = modelMapper;
     }
 
     @PostMapping("/register")
@@ -41,7 +40,7 @@ public class PatientController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<?> updatePatientData(@PathVariable Long id, @RequestBody PatientRequestDto patientDto) {
+    public ResponseEntity<?> updatePatientData(@PathVariable UUID id, @RequestBody PatientRequestDto patientDto) {
         try {
             Patient updatedPatient = patientService.updatePatientData(id, patientDto);
             

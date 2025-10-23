@@ -1,6 +1,7 @@
 package com.salus.agenda.Repositories;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.salus.agenda.Models.Patient;
 
 @Repository
-public interface PatientRepository extends JpaRepository<Patient, Long> {
+public interface PatientRepository extends JpaRepository<Patient, UUID> {
     Optional<Patient> findByPersonalDataEmail(String email);
 
     boolean existsByPersonalDataEmail(String email);

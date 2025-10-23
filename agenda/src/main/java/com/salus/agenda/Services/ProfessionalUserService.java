@@ -1,5 +1,7 @@
 package com.salus.agenda.Services;
 
+import java.util.UUID;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,7 +41,7 @@ public class ProfessionalUserService {
         return professionalRepository.save(newProfessional);
     }
 
-    public ProfessionalUser uptadeProfessionalData(Long professionalId, ProfessionalRequestDto professionalDto) {
+    public ProfessionalUser uptadeProfessionalData(UUID professionalId, ProfessionalRequestDto professionalDto) {
         ProfessionalUser professionalUser = professionalRepository.findById(professionalId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found!"));
         modelMapper.getConfiguration().setSkipNullEnabled(true);
