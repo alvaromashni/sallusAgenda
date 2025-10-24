@@ -20,7 +20,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     boolean existsByProfessionalUser_IdProfessionalUserAndConsultationDate(UUID professionalUserId, LocalDate date);
 
-    @Query(nativeQuery = true, value = "select p.name, p.email, pu.name, pu.email, s.consultation_date , s.consultation_time, s.consultation_description from schedule s join patient p on p.id_patient = s.patient_id join professional_user pu on pu.id_professional_user = s.professional_user_id where s.professional_user_id = :idProfessionalUser and s.consultation_date = :date")
+    @Query("select p.personalData.name as patientName, pu.personalData.name as professionalName, p.personalData.email as patientEmail, pu.personalData.email as professionalUserEmail, s.consultationDate as consultationDate, s.consultationTime as consultationTime, s.consultationDescription as consultationDescription from Schedule s join s.patient p join s.professionalUser pu where pu.idProfessionalUser = :idProfessionalUser and s.consultationDate = :date")
     List<ScheduleSummaryDto> findAllByProfessionalUserAndConsultationDate(
             @Param("idProfessionalUser") UUID IdprofessionalUser,
             @Param("date") LocalDate date);

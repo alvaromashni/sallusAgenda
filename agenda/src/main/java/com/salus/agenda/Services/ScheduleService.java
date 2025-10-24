@@ -3,6 +3,7 @@ package com.salus.agenda.Services;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import com.salus.agenda.Repositories.ConsultationCategoryRepository;
 import com.salus.agenda.Repositories.PatientRepository;
 import com.salus.agenda.Repositories.ProfessionalRepository;
 import com.salus.agenda.Repositories.ScheduleRepository;
+import com.salus.agenda.Dtos.ScheduleSummaryDto;
 
 @Service
 public class ScheduleService {
@@ -73,21 +75,23 @@ public class ScheduleService {
         ProfessionalUser professionalUser = professionalRepository.findById(professionalUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
         Map<LocalDate, Boolean> map = new HashMap<>();
-        for(int i =1; i <= day.lengthOfMonth(); i++) {
+        for (int i = 1; i <= day.lengthOfMonth(); i++) {
             LocalDate currentDate = day.withDayOfMonth(i);
-            boolean verdadeiro = scheduleRepository.existsByProfessionalUser_IdProfessionalUserAndConsultationDate(professionalUserId,
+            boolean verdadeiro = scheduleRepository.existsByProfessionalUser_IdProfessionalUserAndConsultationDate(
+                    professionalUserId,
                     currentDate);
             map.put(currentDate, verdadeiro);
         }
         return map;
-        
+
     }
 
-    //public List<Schedule> getSchedulesForTheDay(ProfessionalUser professionalUser, LocalDate date) {
-        //ProfessionalUser profUser = professionalRepository.findById(professionalUser.getIdProfessionalUser())
-                //.orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
-        //return scheduleRepository.findAllByProfessionalUserAndConsultationDate(professionalUser, date);
-    //}
+    public List<ScheduleSummaryDto> getSchedulesForTheDay(UUID professionalUserId, LocalDate date) {
+        ProfessionalUser profUser = professionalRepository.findById(professionalUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
+        return scheduleRepository.findAllByProfessionalUserAndConsultationDate(professionalUserId, date);
+    }
+
     public void deleteSchedule(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found!"));
