@@ -7,7 +7,6 @@ import com.salus.agenda.Dtos.ScheduleRequestDto;
 import com.salus.agenda.Services.ScheduleService;
 
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -51,7 +50,7 @@ public class ScheduleController {
 
     }
 
-    @GetMapping("/isScheduled")
+    @GetMapping("/isScheduled/{id}")
     public ResponseEntity<?> isScheduled(@RequestParam LocalDate day, @RequestParam UUID professionalUserId) {
         try {
             return ResponseEntity.ok(scheduleService.isSchedulesForTheDay(professionalUserId, day));
@@ -60,8 +59,9 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/findSchedule")
-    public ResponseEntity<?> findAllScheduled(@RequestParam UUID professionalId, @RequestParam LocalDate date) {
+    @GetMapping("/findSchedule/{id}")
+    public ResponseEntity<?> findAllScheduledForTheDay(@PathVariable UUID professionalId,
+            @RequestParam LocalDate date) {
         try {
             return ResponseEntity.ok(scheduleService.getSchedulesForTheDay(professionalId, date));
         } catch (Exception e) {

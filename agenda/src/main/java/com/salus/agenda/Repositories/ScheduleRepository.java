@@ -18,15 +18,17 @@ import com.salus.agenda.Dtos.ScheduleSummaryDto;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    boolean existsByProfessionalUser_IdProfessionalUserAndConsultationDate(UUID professionalUserId, LocalDate date);
+        boolean existsByProfessionalUser_IdProfessionalUserAndConsultationDate(UUID professionalUserId, LocalDate date);
 
-    @Query("select p.personalData.name as patientName, pu.personalData.name as professionalName, p.personalData.email as patientEmail, pu.personalData.email as professionalUserEmail, s.consultationDate as consultationDate, s.consultationTime as consultationTime, s.consultationDescription as consultationDescription from Schedule s join s.patient p join s.professionalUser pu where pu.idProfessionalUser = :idProfessionalUser and s.consultationDate = :date")
-    List<ScheduleSummaryDto> findAllByProfessionalUserAndConsultationDate(
-            @Param("idProfessionalUser") UUID IdprofessionalUser,
-            @Param("date") LocalDate date);
+        @Query("select p.personalData.name as patientName, pu.personalData.name as professionalName, p.personalData.email as patientEmail, pu.personalData.email as professionalUserEmail, s.consultationDate as consultationDate, s.consultationTime as consultationTime, s.consultationDescription as consultationDescription from Schedule s join s.patient p join s.professionalUser pu where pu.idProfessionalUser = :idProfessionalUser and s.consultationDate = :date")
+        List<ScheduleSummaryDto> findAllByProfessionalUserAndConsultationDate(
+                        @Param("idProfessionalUser") UUID IdprofessionalUser,
+                        @Param("date") LocalDate date);
 
-    boolean existsByProfessionalUserAndConsultationDateAndConsultationTime(ProfessionalUser professional,
-            LocalDate date, LocalTime time);
+        boolean existsByProfessionalUserAndConsultationDateAndConsultationTime(ProfessionalUser professional,
+                        LocalDate date, LocalTime time);
 
-    boolean existsByPatientAndConsultationDateAndConsultationTime(Patient patient, LocalDate date, LocalTime time);
+        boolean existsByPatientAndConsultationDateAndConsultationTime(Patient patient, LocalDate date, LocalTime time);
+
+        void deleteByPersonalDataEmail(String email);
 }

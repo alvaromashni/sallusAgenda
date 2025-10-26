@@ -2,6 +2,7 @@ package com.salus.agenda.Services;
 
 import org.springframework.stereotype.Service;
 
+import com.salus.agenda.Exceptions.ResourceNotFoundException;
 import com.salus.agenda.Models.ConsultationCategory;
 import com.salus.agenda.Repositories.ConsultationCategoryRepository;
 
@@ -20,5 +21,11 @@ public class ConsultationCategoryService {
         ConsultationCategory newCategory = new ConsultationCategory();
         newCategory.setCategoryName(consultation.getCategoryName());
         return consultationCategoryRepository.save(newCategory);
+    }
+
+    public void deleteConsultationCategory(Long id) {
+        ConsultationCategory category = consultationCategoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
+        consultationCategoryRepository.deleteById(id);
     }
 }
