@@ -71,7 +71,7 @@ public class ScheduleService {
         return scheduleRepository.save(schedule);
     }
 
-    public Map<LocalDate, Boolean> isSchedulesForTheDay(UUID professionalUserId, LocalDate day) {
+    public Map<LocalDate, Boolean> isScheduledForTheDay(UUID professionalUserId, LocalDate day) {
         ProfessionalUser professionalUser = professionalRepository.findById(professionalUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
         Map<LocalDate, Boolean> map = new HashMap<>();

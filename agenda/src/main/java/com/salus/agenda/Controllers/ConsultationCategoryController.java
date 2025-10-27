@@ -24,8 +24,13 @@ public class ConsultationCategoryController {
 
     @PostMapping("/registerCategory")
     public ResponseEntity<?> registerCategory(@RequestBody ConsultationCategory consultation) {
-        consultationCategoryService.registerConsultationCategory(consultation);
-        return ResponseEntity.ok(consultation);
+        try {
+            return ResponseEntity.ok(consultationCategoryService.registerConsultationCategory(consultation));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+
     }
 
     @DeleteMapping("/deleteCategory/{id}")
@@ -34,7 +39,7 @@ public class ConsultationCategoryController {
             consultationCategoryService.deleteConsultationCategory(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 

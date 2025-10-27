@@ -51,9 +51,9 @@ public class ScheduleController {
     }
 
     @GetMapping("/isScheduled/{id}")
-    public ResponseEntity<?> isScheduled(@RequestParam LocalDate day, @RequestParam UUID professionalUserId) {
+    public ResponseEntity<?> isScheduled(@RequestParam LocalDate day, @PathVariable UUID professionalUserId) {
         try {
-            return ResponseEntity.ok(scheduleService.isSchedulesForTheDay(professionalUserId, day));
+            return ResponseEntity.ok(scheduleService.isScheduledForTheDay(professionalUserId, day));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

@@ -1,5 +1,6 @@
 package com.salus.agenda.Models;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,14 +17,16 @@ public class ConsultationCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idConsultationCategory;
     private String categoryName;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "consultationCategory")
     @JsonIgnore
     private List<Schedule> schedules;
 
-    public ConsultationCategory(String categoryName, List<Schedule> schedules) {
+    public ConsultationCategory(String categoryName, List<Schedule> schedules, LocalDateTime createdAt) {
         this.categoryName = categoryName;
         this.schedules = schedules;
+        this.createdAt = createdAt;
     }
 
     public ConsultationCategory() {
@@ -48,4 +51,17 @@ public class ConsultationCategory {
     public long getIdConsultationCategory() {
         return idConsultationCategory;
     }
+
+    public void setIdConsultationCategory(long idConsultationCategory) {
+        this.idConsultationCategory = idConsultationCategory;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
 }
