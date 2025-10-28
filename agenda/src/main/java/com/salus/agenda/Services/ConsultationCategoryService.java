@@ -2,6 +2,7 @@ package com.salus.agenda.Services;
 
 import org.springframework.stereotype.Service;
 
+import com.salus.agenda.Exceptions.DataConflictException;
 import com.salus.agenda.Exceptions.ResourceNotFoundException;
 import com.salus.agenda.Models.ConsultationCategory;
 import com.salus.agenda.Repositories.ConsultationCategoryRepository;
@@ -16,7 +17,7 @@ public class ConsultationCategoryService {
 
     public ConsultationCategory registerConsultationCategory(ConsultationCategory consultation) {
         if (consultationCategoryRepository.existsByCategoryName(consultation.getCategoryName())) {
-            throw new RuntimeException("Category already exists!");
+            throw new DataConflictException("Category already exists!");
         }
         ConsultationCategory newCategory = new ConsultationCategory();
         newCategory.setCategoryName(consultation.getCategoryName());
