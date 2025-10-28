@@ -29,6 +29,4 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
                         LocalDate date, LocalTime time);
 
         boolean existsByPatientAndConsultationDateAndConsultationTime(Patient patient, LocalDate date, LocalTime time);
-
-        void deleteByPersonalDataEmail(String email);
 }
