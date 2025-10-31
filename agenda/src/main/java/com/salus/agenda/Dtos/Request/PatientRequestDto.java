@@ -1,4 +1,4 @@
-package com.salus.agenda.Dtos;
+package com.salus.agenda.Dtos.Request;
 
 import com.salus.agenda.Models.PersonalData;
 

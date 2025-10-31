@@ -1,4 +1,4 @@
-package com.salus.agenda.Dtos;
+package com.salus.agenda.Dtos.Response;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

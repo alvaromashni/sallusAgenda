@@ -1,4 +1,4 @@
-package com.salus.agenda.Dtos;
+package com.salus.agenda.Dtos.Response;
 
 public record PatientResponseDto(String name) {
 
