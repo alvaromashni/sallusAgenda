@@ -1,6 +1,7 @@
 package com.salus.agenda.Models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,19 +29,23 @@ public class Schedule {
     @ManyToOne
     @JoinColumn(name = "professionalUser_id")
     private ProfessionalUser professionalUser;
+    private boolean isDeleted = false;
+    private LocalDateTime deletedAt;
 
     public Schedule() {
     }
 
     public Schedule(LocalDate consultationDate, String consultationDescription,
             ConsultationCategory consultationCategory, Patient patient, ProfessionalUser professionalUser,
-            LocalTime consultationTime) {
+            LocalTime consultationTime, boolean isDeleted, LocalDateTime deletedAt) {
         this.consultationDate = consultationDate;
         this.consultationDescription = consultationDescription;
         this.consultationCategory = consultationCategory;
         this.patient = patient;
         this.professionalUser = professionalUser;
         this.consultationTime = consultationTime;
+        this.deletedAt = deletedAt;
+        this.isDeleted = isDeleted;
     }
 
     public LocalDate getConsultationDate() {
@@ -93,6 +98,22 @@ public class Schedule {
 
     public void setConsultationTime(LocalTime consultationTime) {
         this.consultationTime = consultationTime;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
 }

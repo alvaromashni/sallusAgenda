@@ -6,9 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.salus.agenda.Dtos.ScheduleRequestDto;
 import com.salus.agenda.Exceptions.ResourceNotFoundException;
 import com.salus.agenda.Exceptions.ScheduleConflictException;
 import com.salus.agenda.Models.ConsultationCategory;
@@ -19,7 +20,8 @@ import com.salus.agenda.Repositories.ConsultationCategoryRepository;
 import com.salus.agenda.Repositories.PatientRepository;
 import com.salus.agenda.Repositories.ProfessionalRepository;
 import com.salus.agenda.Repositories.ScheduleRepository;
-import com.salus.agenda.Dtos.ScheduleSummaryDto;
+import com.salus.agenda.Dtos.Request.ScheduleRequestDto;
+import com.salus.agenda.Dtos.Response.ScheduleSummaryDto;
 
 @Service
 public class ScheduleService {
@@ -27,13 +29,16 @@ public class ScheduleService {
     private final ProfessionalRepository professionalRepository;
     private final PatientRepository patientRepository;
     private final ConsultationCategoryRepository consultationCategoryRepository;
+    private final ModelMapper modelMapper;
 
     public ScheduleService(ScheduleRepository scheduleRepository, ProfessionalRepository professionalRepository,
-            PatientRepository patientRepository, ConsultationCategoryRepository consultationCategoryRepository) {
+            PatientRepository patientRepository, ConsultationCategoryRepository consultationCategoryRepository,
+            ModelMapper modelMapper) {
         this.scheduleRepository = scheduleRepository;
         this.professionalRepository = professionalRepository;
         this.patientRepository = patientRepository;
         this.consultationCategoryRepository = consultationCategoryRepository;
+        this.modelMapper = modelMapper;
 
     }
 
@@ -61,13 +66,7 @@ public class ScheduleService {
         if (patientHasConflict(patient, newSchedule.consultationDate(), newSchedule.consultationTime())) {
             throw new ScheduleConflictException("The patient already has an appointment at this time!");
         }
-        Schedule schedule = new Schedule(
-                newSchedule.consultationDate(),
-                newSchedule.consultationDescription(),
-                consultationCategory,
-                patient,
-                professional,
-                newSchedule.consultationTime());
+        Schedule schedule = modelMapper.map(newSchedule, Schedule.class);
         return scheduleRepository.save(schedule);
     }
 
@@ -92,9 +91,15 @@ public class ScheduleService {
         return scheduleRepository.findAllByProfessionalUserAndConsultationDate(professionalUserId, date);
     }
 
-    public void deleteSchedule(Long scheduleId) {
-        Schedule schedule = scheduleRepository.findById(scheduleId)
+    public void hardDeleteSchedule(Long id) {
+        Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found!"));
         scheduleRepository.delete(schedule);
+    }
+
+    public void softDeleteSchedule(Long id) {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Schedule not found!"));
+        scheduleRepository.doSoftDeleteById(id);
     }
 }

@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.salus.agenda.Dtos.Response.ScheduleSummaryDto;
 import com.salus.agenda.Models.Patient;
 import com.salus.agenda.Models.ProfessionalUser;
 import com.salus.agenda.Models.Schedule;
-import com.salus.agenda.Dtos.ScheduleSummaryDto;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
@@ -29,4 +32,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
                         LocalDate date, LocalTime time);
 
         boolean existsByPatientAndConsultationDateAndConsultationTime(Patient patient, LocalDate date, LocalTime time);
+
+        @Transactional
+        @Modifying
+        @Query("UPDATE Schedule s SET s.isDeleted = true, s.deletedAt = CURRENT_TIMESTAMP where s.idSchedule=:idSchedule")
+        void doSoftDeleteById(@Param("idSchedule") Long id);
 }

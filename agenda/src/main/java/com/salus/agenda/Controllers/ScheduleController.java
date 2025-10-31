@@ -3,7 +3,7 @@ package com.salus.agenda.Controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.salus.agenda.Dtos.ScheduleRequestDto;
+import com.salus.agenda.Dtos.Request.ScheduleRequestDto;
 import com.salus.agenda.Services.ScheduleService;
 
 import java.time.LocalDate;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/schedule")
@@ -42,10 +43,21 @@ public class ScheduleController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteSchedule(@PathVariable Long id) {
         try {
-            scheduleService.deleteSchedule(id);
+            scheduleService.hardDeleteSchedule(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
+    }
+
+    @PutMapping("delete/softDelete/{id}")
+    public ResponseEntity<?> softDelete(@PathVariable Long id) {
+        try {
+            scheduleService.softDeleteSchedule(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
     }
