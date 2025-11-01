@@ -3,7 +3,7 @@ package com.salus.agenda.Controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.salus.agenda.Dtos.PatientRequestDto;
+import com.salus.agenda.Dtos.Request.PatientRequestDto;
 import com.salus.agenda.Models.Patient;
 import com.salus.agenda.Services.PatientService;
 
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/patient")
 public class PatientController {
     private final PatientService patientService;
-    
 
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
@@ -43,7 +42,7 @@ public class PatientController {
     public ResponseEntity<?> updatePatientData(@PathVariable UUID id, @RequestBody PatientRequestDto patientDto) {
         try {
             Patient updatedPatient = patientService.updatePatientData(id, patientDto);
-            
+
             return ResponseEntity.status(HttpStatus.OK).body(updatedPatient);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

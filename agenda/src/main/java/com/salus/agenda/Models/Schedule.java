@@ -3,20 +3,25 @@ package com.salus.agenda.Models;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idSchedule;
-
+    @Column(nullable = false)
+    @NotNull(message = "Consultation date can not be null")
     private LocalDate consultationDate;
+    @NotNull(message = "Consultation time can not be null")
     private LocalTime consultationTime;
 
     private String consultationDescription;
@@ -29,7 +34,7 @@ public class Schedule {
     @ManyToOne
     @JoinColumn(name = "professionalUser_id")
     private ProfessionalUser professionalUser;
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
     private LocalDateTime deletedAt;
 
     public Schedule() {

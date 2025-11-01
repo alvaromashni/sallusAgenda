@@ -33,12 +33,15 @@ public class ProfessionalUser {
     private String expertise;
     private LocalDateTime createdAt = LocalDateTime.now();
     private boolean active = true;
+    private Boolean isDeleted = false;
+    private LocalDateTime deletedAt;
     @OneToMany(mappedBy = "professionalUser")
     @JsonIgnore
     private List<Schedule> schedules;
 
     public ProfessionalUser(PersonalData personalData, String crm, String occupation, String expertise,
-            List<Schedule> schedules, UUID idProfessionalUser, LocalDateTime createdAt, boolean active) {
+            List<Schedule> schedules, UUID idProfessionalUser, LocalDateTime createdAt, boolean active,
+            boolean isDeleted, LocalDateTime deletedAt) {
         this.personalData = personalData;
         this.crm = crm;
         this.occupation = occupation;
@@ -47,6 +50,8 @@ public class ProfessionalUser {
         this.idProfessionalUser = idProfessionalUser;
         this.createdAt = createdAt;
         this.active = active;
+        this.deletedAt = deletedAt;
+        this.isDeleted = isDeleted;
     }
 
     public ProfessionalUser() {
@@ -116,5 +121,21 @@ public class ProfessionalUser {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
 }

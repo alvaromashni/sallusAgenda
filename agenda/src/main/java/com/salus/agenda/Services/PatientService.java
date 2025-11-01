@@ -6,7 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.salus.agenda.Dtos.PatientRequestDto;
+import com.salus.agenda.Dtos.Request.PatientRequestDto;
 import com.salus.agenda.Exceptions.ResourceNotFoundException;
 import com.salus.agenda.Models.Patient;
 import com.salus.agenda.Repositories.PatientRepository;

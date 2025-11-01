@@ -6,8 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.salus.agenda.Dtos.ProfessionalRequestDto;
-import com.salus.agenda.Dtos.ProfessionalResponseDto;
+
+import com.salus.agenda.Dtos.Request.ProfessionalRequestDto;
+import com.salus.agenda.Dtos.Response.ProfessionalResponseDto;
 import com.salus.agenda.Models.ProfessionalUser;
 import com.salus.agenda.Services.ProfessionalUserService;
 
