@@ -25,16 +25,21 @@ public class Patient {
     private List<Schedule> schedules;
     private LocalDateTime createdAt = LocalDateTime.now();
     private boolean active = true;
+    private boolean isDeleted = false;
+    private LocalDateTime deletedAt;
 
     public Patient() {
     }
 
-    public Patient(PersonalData personalData, List<Schedule> schedules, boolean active, LocalDateTime createdAt, UUID idPatient) {
+    public Patient(PersonalData personalData, List<Schedule> schedules, boolean active, LocalDateTime createdAt,
+            UUID idPatient, boolean isDeleted, LocalDateTime deletedAt) {
         this.personalData = personalData;
         this.schedules = schedules;
         this.active = active;
         this.createdAt = createdAt;
         this.idPatient = idPatient;
+        this.deletedAt = deletedAt;
+        this.isDeleted = isDeleted;
     }
 
     public PersonalData getPersonalData() {
@@ -48,6 +53,7 @@ public class Patient {
     public UUID getIdPatient() {
         return idPatient;
     }
+
     public void setIdPatient(UUID idPatient) {
         this.idPatient = idPatient;
     }
@@ -75,6 +81,21 @@ public class Patient {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
-    
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
 }
