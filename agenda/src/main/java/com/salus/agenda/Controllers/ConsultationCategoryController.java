@@ -1,6 +1,5 @@
 package com.salus.agenda.Controllers;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,23 +23,16 @@ public class ConsultationCategoryController {
 
     @PostMapping("/registerCategory")
     public ResponseEntity<?> registerCategory(@RequestBody ConsultationCategory consultation) {
-        try {
-            return ResponseEntity.ok(consultationCategoryService.registerConsultationCategory(consultation));
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-
+        consultationCategoryService.registerConsultationCategory(consultation);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/deleteCategory/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
-        try {
-            consultationCategoryService.deleteConsultationCategory(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        consultationCategoryService.hardDeleteConsultationCategory(id);
+        return ResponseEntity.ok().build();
+
     }
+
 
 }

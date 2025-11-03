@@ -24,9 +24,10 @@ public class ConsultationCategoryService {
         return consultationCategoryRepository.save(newCategory);
     }
 
-    public void deleteConsultationCategory(Long id) {
-        ConsultationCategory category = consultationCategoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
+    public void hardDeleteConsultationCategory(Long id) {
+        if (!consultationCategoryRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Categoria não encontrada!");
+        }
         consultationCategoryRepository.deleteById(id);
     }
 }

@@ -31,55 +31,32 @@ public class ScheduleController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerSchedule(@RequestBody ScheduleRequestDto schedule) {
-        try {
-            scheduleService.registerSchedule(schedule);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-
+        scheduleService.registerSchedule(schedule);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteSchedule(@PathVariable Long id) {
-        try {
-            scheduleService.hardDeleteSchedule(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-
+        scheduleService.hardDeleteSchedule(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("delete/softDelete/{id}")
     public ResponseEntity<?> softDelete(@PathVariable Long id) {
-        try {
-            scheduleService.softDeleteSchedule(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
+        scheduleService.softDeleteSchedule(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/isScheduled/{id}")
     public ResponseEntity<?> isScheduled(@RequestParam LocalDate day, @PathVariable UUID professionalUserId) {
-        try {
-            return ResponseEntity.ok(scheduleService.isScheduledForTheDay(professionalUserId, day));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+
+        return ResponseEntity.ok(scheduleService.isScheduledForTheDay(professionalUserId, day));
     }
 
     @GetMapping("/findSchedule/{id}")
     public ResponseEntity<?> findAllScheduledForTheDay(@PathVariable UUID professionalId,
             @RequestParam LocalDate date) {
-        try {
-            return ResponseEntity.ok(scheduleService.getSchedulesForTheDay(professionalId, date));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
+        return ResponseEntity.ok(scheduleService.getSchedulesForTheDay(professionalId, date));
     }
 
 }

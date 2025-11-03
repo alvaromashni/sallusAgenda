@@ -8,14 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.salus.agenda.Dtos.Request.ProfessionalRequestDto;
-import com.salus.agenda.Dtos.Response.ProfessionalResponseDto;
-import com.salus.agenda.Models.ProfessionalUser;
 import com.salus.agenda.Services.ProfessionalUserService;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
@@ -29,25 +28,27 @@ public class ProfessionalController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerProfessional(@RequestBody @Valid ProfessionalRequestDto professionalDto) {
-        try {
-            ProfessionalUser newProfessional = professionalUserService.registerProfessionalUser(professionalDto);
-            ProfessionalResponseDto response = new ProfessionalResponseDto(newProfessional.getPersonalData().getName());
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-
+        professionalUserService.registerProfessionalUser(professionalDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("update/{id}")
     public ResponseEntity<?> updateProfessionalData(@PathVariable UUID id,
             @RequestBody ProfessionalRequestDto professionalDto) {
-        try {
-            professionalUserService.uptadeProfessionalData(id, professionalDto);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        professionalUserService.uptadeProfessionalData(id, professionalDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("hard-delete/{id}")
+    public ResponseEntity<?> hardDeleteProfessional(@PathVariable UUID id) {
+        professionalUserService.hardDeleteProfessional(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("soft-delete")
+    public ResponseEntity<?> softDeleteProfessional(@PathVariable UUID id) {
+        professionalUserService.softDeleteProfessional(id);
+        return ResponseEntity.ok().build();
     }
 
 }

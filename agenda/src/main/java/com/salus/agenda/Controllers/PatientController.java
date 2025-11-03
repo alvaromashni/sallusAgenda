@@ -30,44 +30,26 @@ public class PatientController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerPatientSchedule(@RequestBody @Valid PatientRequestDto patient) {
-        try {
-            patientService.createPacient(patient);
-            return ResponseEntity.status(HttpStatus.CREATED).body(patient);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-
+        patientService.createPacient(patient);
+        return ResponseEntity.status(HttpStatus.CREATED).body(patient);
     }
 
     @PutMapping("update/{id}")
     public ResponseEntity<?> updatePatientData(@PathVariable UUID id, @RequestBody PatientRequestDto patientDto) {
-        try {
-            Patient updatedPatient = patientService.updatePatientData(id, patientDto);
-
-            return ResponseEntity.status(HttpStatus.OK).body(updatedPatient);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        Patient updatedPatient = patientService.updatePatientData(id, patientDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedPatient);
     }
 
     @DeleteMapping("soft-delete/{id}")
     public ResponseEntity<?> softDeletePatient(@PathVariable UUID id, @RequestBody String entity) {
-        try {
-            patientService.softDeletePatient(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+
+        patientService.softDeletePatient(id);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("hard-delete/{id}")
     public ResponseEntity<?> hardDeletePatient(@PathVariable UUID id) {
-        try {
-            patientService.hardDeletePatient(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        patientService.hardDeletePatient(id);
+        return ResponseEntity.ok().build();
     }
-
 }

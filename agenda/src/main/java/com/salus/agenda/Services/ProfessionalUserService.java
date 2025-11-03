@@ -51,4 +51,18 @@ public class ProfessionalUserService {
         }
         return professionalRepository.save(professionalUser);
     }
+
+    public void softDeleteProfessional(UUID id) {
+        if (!professionalRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Usuário não encontrado!");
+        }
+
+    }
+
+    public void hardDeleteProfessional(UUID id) {
+        if (!professionalRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Usuário não encontrado!");
+        }
+        professionalRepository.deleteById(id);
+    }
 }

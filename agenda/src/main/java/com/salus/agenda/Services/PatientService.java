@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.salus.agenda.Dtos.Request.PatientRequestDto;
 import com.salus.agenda.Exceptions.ResourceNotFoundException;
 import com.salus.agenda.Models.Patient;
-import com.salus.agenda.Models.ProfessionalUser;
 import com.salus.agenda.Repositories.PatientRepository;
 
 @Service
@@ -48,14 +47,16 @@ public class PatientService {
     }
 
     public void softDeletePatient(UUID id) {
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
+        if (!patientRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Usuário não encontrado!");
+        }
         patientRepository.softDeleteById(id);
     }
 
     public void hardDeletePatient(UUID id) {
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
+        if (!patientRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Usuário não encontrado!");
+        }
         patientRepository.deleteById(id);
     }
 }

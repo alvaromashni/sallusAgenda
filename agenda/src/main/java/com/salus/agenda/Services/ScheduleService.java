@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.salus.agenda.Exceptions.ResourceNotFoundException;
 import com.salus.agenda.Exceptions.ScheduleConflictException;
-import com.salus.agenda.Models.ConsultationCategory;
 import com.salus.agenda.Models.Patient;
 import com.salus.agenda.Models.ProfessionalUser;
 import com.salus.agenda.Models.Schedule;
@@ -57,22 +56,23 @@ public class ScheduleService {
                 .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
         Patient patient = patientRepository.findById(newSchedule.patientId())
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
-        ConsultationCategory consultationCategory = consultationCategoryRepository
-                .findById(newSchedule.consultationCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Consultation category not found!"));
+        if (!consultationCategoryRepository.existsById(newSchedule.consultationCategoryId())) {
+            throw new ResourceNotFoundException("Categoria não encontrada!");
+        }
         if (hasConflict(professional, newSchedule.consultationDate(), newSchedule.consultationTime())) {
             throw new ScheduleConflictException("This time slot is already booked!");
         }
         if (patientHasConflict(patient, newSchedule.consultationDate(), newSchedule.consultationTime())) {
-            throw new ScheduleConflictException("The patient already has an appointment at this time!");
+            throw new ScheduleConflictException("O paciente já tem um agendamento para esta data e horário!");
         }
         Schedule schedule = modelMapper.map(newSchedule, Schedule.class);
         return scheduleRepository.save(schedule);
     }
 
     public Map<LocalDate, Boolean> isScheduledForTheDay(UUID professionalUserId, LocalDate day) {
-        ProfessionalUser professionalUser = professionalRepository.findById(professionalUserId)
-                .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
+        if (!professionalRepository.existsById(professionalUserId)) {
+            throw new ResourceNotFoundException("Profissional não encontrado!");
+        }
         Map<LocalDate, Boolean> map = new HashMap<>();
         for (int i = 1; i <= day.lengthOfMonth(); i++) {
             LocalDate currentDate = day.withDayOfMonth(i);
@@ -86,20 +86,23 @@ public class ScheduleService {
     }
 
     public List<ScheduleSummaryDto> getSchedulesForTheDay(UUID professionalUserId, LocalDate date) {
-        ProfessionalUser profUser = professionalRepository.findById(professionalUserId)
-                .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
+        if (!professionalRepository.existsById(professionalUserId)) {
+            throw new ResourceNotFoundException("Profissional não encontrado!");
+        }
         return scheduleRepository.findAllByProfessionalUserAndConsultationDate(professionalUserId, date);
     }
 
     public void hardDeleteSchedule(Long id) {
-        Schedule schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Schedule not found!"));
-        scheduleRepository.delete(schedule);
+        if (!scheduleRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Agendamento não encontrado!");
+        }
+        scheduleRepository.deleteById(id);
     }
 
     public void softDeleteSchedule(Long id) {
-        Schedule schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Schedule not found!"));
-        scheduleRepository.doSoftDeleteById(id);
+        if (!scheduleRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Agendamento não encontrado!");
+        }
+        scheduleRepository.softDeleteById(id);
     }
 }
