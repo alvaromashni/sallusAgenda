@@ -1,6 +1,7 @@
 package com.salus.agenda.Models;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,9 +15,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class ProfessionalUser {
+public class ProfessionalUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idProfessionalUser;
@@ -35,13 +39,14 @@ public class ProfessionalUser {
     private boolean active = true;
     private Boolean isDeleted = false;
     private LocalDateTime deletedAt;
+    private String role;
     @OneToMany(mappedBy = "professionalUser")
     @JsonIgnore
     private List<Schedule> schedules;
 
     public ProfessionalUser(PersonalData personalData, String crm, String occupation, String expertise,
             List<Schedule> schedules, UUID idProfessionalUser, LocalDateTime createdAt, boolean active,
-            boolean isDeleted, LocalDateTime deletedAt) {
+            boolean isDeleted, LocalDateTime deletedAt, String role ) {
         this.personalData = personalData;
         this.crm = crm;
         this.occupation = occupation;
@@ -52,6 +57,7 @@ public class ProfessionalUser {
         this.active = active;
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
+        this.role = role;
     }
 
     public ProfessionalUser() {
@@ -138,4 +144,54 @@ public class ProfessionalUser {
         this.deletedAt = deletedAt;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.getRole()));
+    }
+
+    @Override
+    public String getPassword() {
+        return "";
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 }

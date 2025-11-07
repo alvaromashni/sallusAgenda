@@ -2,6 +2,6 @@ package com.salus.agenda.Dtos.Response;
 
 import java.util.UUID;
 
-public record PatientLoginResponseDto(UUID id) {
+public record PatientLoginResponseDto(UUID id, String token) {
 
 }

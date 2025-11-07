@@ -1,6 +1,7 @@
 package com.salus.agenda.Models;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,9 +13,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class Patient {
+public class Patient implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idPatient;
@@ -27,12 +31,13 @@ public class Patient {
     private boolean active = true;
     private boolean isDeleted = false;
     private LocalDateTime deletedAt;
+    private String role;
 
     public Patient() {
     }
 
     public Patient(PersonalData personalData, List<Schedule> schedules, boolean active, LocalDateTime createdAt,
-            UUID idPatient, boolean isDeleted, LocalDateTime deletedAt) {
+            UUID idPatient, boolean isDeleted, LocalDateTime deletedAt, String role) {
         this.personalData = personalData;
         this.schedules = schedules;
         this.active = active;
@@ -40,6 +45,7 @@ public class Patient {
         this.idPatient = idPatient;
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
+        this.role = role;
     }
 
     public PersonalData getPersonalData() {
@@ -98,4 +104,46 @@ public class Patient {
         this.deletedAt = deletedAt;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.getRole()));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.personalData.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.personalData.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 }
