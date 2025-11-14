@@ -1,7 +1,10 @@
 package com.salus.agenda.Services;
 
-import java.util.UUID;
+import java.time.LocalTime;
+import java.util.*;
 
+import com.salus.agenda.Dtos.Request.HoursDto;
+import com.salus.agenda.Models.Hours;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,13 +59,19 @@ public class ProfessionalUserService {
         if (!professionalRepository.existsById(id)) {
             throw new ResourceNotFoundException("Usuário não encontrado!");
         }
-
+    professionalRepository.softDeleteById(id);
     }
-
-    public void hardDeleteProfessional(UUID id) {
-        if (!professionalRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Usuário não encontrado!");
+    public ProfessionalUser updateProfessionalHours(UUID id, HoursDto dto){
+        ProfessionalUser professionalUser = professionalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado!"));
+        Hours hours = professionalUser.getHours();
+        if (hours == null){
+            professionalUser.setHours(new Hours(new LinkedHashSet<>(hours.getHours())));
         }
-        professionalRepository.deleteById(id);
+        Set<LocalTime>updatedHours = new LinkedHashSet<>(hours.getHours());
+        updatedHours.addAll(dto.hours());
+        hours.setHours(updatedHours);
+        professionalUser.setIdProfessionalUser(id);
+        return professionalRepository.save(professionalUser);
+
     }
 }

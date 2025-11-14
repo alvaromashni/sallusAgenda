@@ -2,20 +2,15 @@ package com.salus.agenda.Controllers;
 
 import java.util.UUID;
 
+import com.salus.agenda.Dtos.Request.HoursDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.salus.agenda.Dtos.Request.ProfessionalRequestDto;
 import com.salus.agenda.Services.ProfessionalUserService;
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/professional")
@@ -38,16 +33,14 @@ public class ProfessionalController {
         professionalUserService.uptadeProfessionalData(id, professionalDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
-    @DeleteMapping("hard-delete/{id}")
-    public ResponseEntity<?> hardDeleteProfessional(@PathVariable UUID id) {
-        professionalUserService.hardDeleteProfessional(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("soft-delete")
+    @DeleteMapping("soft-delete/{id}")
     public ResponseEntity<?> softDeleteProfessional(@PathVariable UUID id) {
         professionalUserService.softDeleteProfessional(id);
+        return ResponseEntity.ok().build();
+    }
+    @PatchMapping("/updateHours")
+    public ResponseEntity<?> updateHours(UUID id, HoursDto dto){
+        professionalUserService.updateProfessionalHours(id, dto);
         return ResponseEntity.ok().build();
     }
 

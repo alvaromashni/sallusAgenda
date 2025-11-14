@@ -43,4 +43,5 @@ public class AdminAuthService implements UserDetailsService {
     public Admin loadByUsername(String username){
         return adminRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Admin not found"));
     }
+
 }

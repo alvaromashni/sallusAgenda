@@ -27,6 +27,6 @@ public interface ProfessionalRepository extends JpaRepository<ProfessionalUser, 
 
     @Transactional
     @Modifying
-    @Query("UPDATE ProfessionalUser pu SET pu.isDeleted = true, pu.deletedAt = CURRENT_TIMESTAMP where pu.idProfessionalUser = :idSchedule")
+    @Query("UPDATE ProfessionalUser pu SET pu.isDeleted = true, pu.deletedAt = CURRENT_TIMESTAMP where pu.idProfessionalUser = :idProfessionalUser")
     void softDeleteById(@Param("idProfessionalUser") UUID id);
 }

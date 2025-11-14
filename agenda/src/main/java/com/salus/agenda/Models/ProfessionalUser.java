@@ -39,10 +39,12 @@ public class ProfessionalUser implements UserDetails {
     private boolean active = true;
     private Boolean isDeleted = false;
     private LocalDateTime deletedAt;
-    private String role;
+    private String role = "USER";
     @OneToMany(mappedBy = "professionalUser")
     @JsonIgnore
     private List<Schedule> schedules;
+    @Embedded
+    private Hours hours;
 
     public ProfessionalUser(PersonalData personalData, String crm, String occupation, String expertise,
             List<Schedule> schedules, UUID idProfessionalUser, LocalDateTime createdAt, boolean active,
@@ -57,7 +59,7 @@ public class ProfessionalUser implements UserDetails {
         this.active = active;
         this.deletedAt = deletedAt;
         this.isDeleted = isDeleted;
-        this.role = role;
+        this.role = "USER";
     }
 
     public ProfessionalUser() {
@@ -158,6 +160,14 @@ public class ProfessionalUser implements UserDetails {
 
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public Hours getHours() {
+        return hours;
+    }
+
+    public void setHours(Hours hours) {
+        this.hours = hours;
     }
 
     @Override

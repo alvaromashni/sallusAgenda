@@ -46,10 +46,4 @@ public class PatientController {
         patientService.softDeletePatient(id);
         return ResponseEntity.ok().build();
     }
-
-    @DeleteMapping("hard-delete/{id}")
-    public ResponseEntity<?> hardDeletePatient(@PathVariable UUID id) {
-        patientService.hardDeletePatient(id);
-        return ResponseEntity.ok().build();
-    }
 }

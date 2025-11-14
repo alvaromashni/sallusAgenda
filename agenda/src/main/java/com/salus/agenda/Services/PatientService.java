@@ -52,11 +52,4 @@ public class PatientService {
         }
         patientRepository.softDeleteById(id);
     }
-
-    public void hardDeletePatient(UUID id) {
-        if (!patientRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Usuário não encontrado!");
-        }
-        patientRepository.deleteById(id);
-    }
 }

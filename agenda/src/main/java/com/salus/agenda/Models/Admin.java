@@ -1,8 +1,6 @@
 package com.salus.agenda.Models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,13 +12,14 @@ import java.util.UUID;
 @Entity
 public class Admin implements UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idAdmin;
     @Column(unique = true, updatable = false, nullable = false)
     private String username;
     @Column(nullable = false, updatable = false)
     private String password;
     @Column(nullable = false)
-    private String role;
+    private String role = "ADMIN";
 
     public Admin(UUID idAdmin, String username, String password, String role) {
         this.idAdmin = idAdmin;
