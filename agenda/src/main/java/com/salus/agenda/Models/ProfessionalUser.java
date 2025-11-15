@@ -177,12 +177,12 @@ public class ProfessionalUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return personalData.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return personalData.getEmail();
     }
 
     @Override

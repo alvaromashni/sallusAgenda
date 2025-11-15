@@ -38,9 +38,14 @@ public class ProfessionalController {
         professionalUserService.softDeleteProfessional(id);
         return ResponseEntity.ok().build();
     }
-    @PatchMapping("/updateHours")
-    public ResponseEntity<?> updateHours(UUID id, HoursDto dto){
+    @PatchMapping("/{id}/updateHours")
+    public ResponseEntity<?> updateHours(@PathVariable UUID id, @RequestBody HoursDto dto){
         professionalUserService.updateProfessionalHours(id, dto);
+        return ResponseEntity.ok().build();
+    }
+    @PatchMapping("/{id}/deleteHours")
+    public ResponseEntity<?> deleteHours(@PathVariable UUID id, @RequestBody HoursDto dto){
+        professionalUserService.deleteProfessionalHours(id, dto);
         return ResponseEntity.ok().build();
     }
 

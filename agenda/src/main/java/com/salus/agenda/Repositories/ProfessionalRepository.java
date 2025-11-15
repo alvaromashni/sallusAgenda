@@ -1,6 +1,9 @@
 package com.salus.agenda.Repositories;
 
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +32,6 @@ public interface ProfessionalRepository extends JpaRepository<ProfessionalUser, 
     @Modifying
     @Query("UPDATE ProfessionalUser pu SET pu.isDeleted = true, pu.deletedAt = CURRENT_TIMESTAMP where pu.idProfessionalUser = :idProfessionalUser")
     void softDeleteById(@Param("idProfessionalUser") UUID id);
+    @Query("SELECT pu.hours.hours from ProfessionalUser pu where pu.idProfessionalUser = :idProfessionalUser")
+    Set<LocalTime> findAllProfessionalHours(@Param("idProfessionalUser") UUID idProfessionalUser);
 }

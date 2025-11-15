@@ -31,8 +31,9 @@ public class ProfessionalUserAuthService implements UserDetailsService {
     public String login(ProfessionalLoginRequestDto dto){
         ProfessionalUser professionalUser = professionalRepository.findByPersonalDataEmail(dto.email())
                 .orElseThrow(() -> new UsernameNotFoundException("Professional not found!"));
+        System.out.println("senha do profissional: " + professionalUser.getPassword());
         if (!passwordEncoder.matches(dto.password(), professionalUser.getPassword())){
-            throw  new BadCredentialsException("Wrong password!");
+            throw new BadCredentialsException("Wrong password!");
         }
         return jwtUtil.generateToken(dto.email());
 

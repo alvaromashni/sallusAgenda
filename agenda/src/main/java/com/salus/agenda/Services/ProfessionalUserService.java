@@ -64,14 +64,24 @@ public class ProfessionalUserService {
     public ProfessionalUser updateProfessionalHours(UUID id, HoursDto dto){
         ProfessionalUser professionalUser = professionalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado!"));
         Hours hours = professionalUser.getHours();
-        if (hours == null){
-            professionalUser.setHours(new Hours(new LinkedHashSet<>(hours.getHours())));
+        if (professionalUser.getHours() == null){
+            hours = new Hours();
+            hours.setHours(new LinkedHashSet<>());
+            professionalUser.setHours(hours);
         }
+
         Set<LocalTime>updatedHours = new LinkedHashSet<>(hours.getHours());
         updatedHours.addAll(dto.hours());
         hours.setHours(updatedHours);
         professionalUser.setIdProfessionalUser(id);
         return professionalRepository.save(professionalUser);
-
+    }
+    public ProfessionalUser deleteProfessionalHours(UUID id, HoursDto dto){
+        ProfessionalUser professionalUser = professionalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
+        Hours hours = professionalUser.getHours();
+        Set<LocalTime> updatedHours = new LinkedHashSet<>(hours.getHours());
+        updatedHours.remove(dto.hours());
+        hours.setHours(updatedHours);
+        return professionalRepository.save(professionalUser);
     }
 }
