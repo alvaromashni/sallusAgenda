@@ -1,0 +1,38 @@
+package com.salus.agenda.controllers;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.salus.agenda.models.ConsultationCategory;
+import com.salus.agenda.services.ConsultationCategoryService;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+@RestController
+@RequestMapping("/category")
+public class ConsultationCategoryController {
+    private final ConsultationCategoryService consultationCategoryService;
+
+    public ConsultationCategoryController(ConsultationCategoryService consultationCategoryService) {
+        this.consultationCategoryService = consultationCategoryService;
+    }
+
+    @PostMapping("/registerCategory")
+    public ResponseEntity<?> registerCategory(@RequestBody ConsultationCategory consultation) {
+        consultationCategoryService.registerConsultationCategory(consultation);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/deleteCategory/{id}")
+    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
+        consultationCategoryService.hardDeleteConsultationCategory(id);
+        return ResponseEntity.ok().build();
+
+    }
+
+
+}
