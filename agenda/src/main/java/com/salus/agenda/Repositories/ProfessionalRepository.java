@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import com.salus.agenda.Models.Hours;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,10 +29,13 @@ public interface ProfessionalRepository extends JpaRepository<ProfessionalUser, 
 
     boolean existsByCrm(String crm);
 
+    boolean existsByPersonalData_PhoneNumber(String phoneNumber);
+
     @Transactional
     @Modifying
     @Query("UPDATE ProfessionalUser pu SET pu.isDeleted = true, pu.deletedAt = CURRENT_TIMESTAMP where pu.idProfessionalUser = :idProfessionalUser")
     void softDeleteById(@Param("idProfessionalUser") UUID id);
     @Query("SELECT pu.hours.hours from ProfessionalUser pu where pu.idProfessionalUser = :idProfessionalUser")
     Set<LocalTime> findAllProfessionalHours(@Param("idProfessionalUser") UUID idProfessionalUser);
+
 }

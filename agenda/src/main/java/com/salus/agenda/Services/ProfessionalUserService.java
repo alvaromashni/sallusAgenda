@@ -1,11 +1,15 @@
 package com.salus.agenda.Services;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
 import com.salus.agenda.Dtos.Request.HoursDto;
 import com.salus.agenda.Models.Hours;
+import com.salus.agenda.Models.Patient;
+import com.salus.agenda.Repositories.ScheduleRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +24,14 @@ public class ProfessionalUserService {
     private final ProfessionalRepository professionalRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ScheduleRepository scheduleRepository;
 
     public ProfessionalUserService(ProfessionalRepository professionalRepository, ModelMapper modelMapper,
-            PasswordEncoder passwordEncoder) {
+                                   PasswordEncoder passwordEncoder, ScheduleRepository scheduleRepository) {
         this.professionalRepository = professionalRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.scheduleRepository = scheduleRepository;
     }
 
     public ProfessionalUser registerProfessionalUser(ProfessionalRequestDto professional) {
@@ -35,8 +41,8 @@ public class ProfessionalUserService {
             throw new DataConflictException("This cpf has already been registered");
         } else if (professionalRepository.existsByPersonalDataEmail(professional.personalData().getEmail())) {
             throw new DataConflictException("This email has already been registered!");
-        } else if (professionalRepository.existsByPersonalDataName(professional.personalData().getName())) {
-            throw new DataConflictException("This name has already been registered");
+        } else if (professionalRepository.existsByPersonalData_PhoneNumber(professional.personalData().getPhoneNumber())) {
+            throw new DataConflictException("This phone number has already been registered");
         }
         ProfessionalUser newProfessional = modelMapper.map(professional, ProfessionalUser.class);
         newProfessional.getPersonalData()
@@ -83,5 +89,15 @@ public class ProfessionalUserService {
         updatedHours.remove(dto.hours());
         hours.setHours(updatedHours);
         return professionalRepository.save(professionalUser);
+    }
+    public Map<LocalTime, Boolean> findAllProfessionalHours(UUID id){
+        ProfessionalUser professionalUser = professionalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
+        Set<LocalTime> hours = professionalUser.getHours().getHours();
+        Map<LocalTime, Boolean> map = new HashMap<>();
+        for (LocalTime hour: hours) {
+            boolean avaliable = scheduleRepository.existsByConsultationTime(hour);
+            map.put(hour, avaliable);
+        }
+        return map;
     }
 }

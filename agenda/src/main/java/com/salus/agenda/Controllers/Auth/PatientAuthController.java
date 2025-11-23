@@ -22,7 +22,7 @@ public class PatientAuthController {
     @PostMapping("/login")
     public ResponseEntity<PatientLoginResponseDto> login (@Valid @RequestBody PatientRequestLoginDto dto){
         String token = patientAuthService.login(dto);
-        Patient patient = patientAuthService.loadByEmail(dto.emai());
+        Patient patient = patientAuthService.loadByEmail(dto.email());
         return ResponseEntity.ok(new PatientLoginResponseDto(patient.getIdPatient(), token));
     }
 }

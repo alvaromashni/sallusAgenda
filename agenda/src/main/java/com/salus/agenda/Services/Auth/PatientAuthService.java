@@ -28,12 +28,12 @@ public class PatientAuthService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Patient not found"));
     }
     public String login(PatientRequestLoginDto dto){
-        Patient patient = patientRepository.findByPersonalDataEmail(dto.emai())
+        Patient patient = patientRepository.findByPersonalDataEmail(dto.email())
                 .orElseThrow(() -> new UsernameNotFoundException("Patient not found"));
-        if (!passwordEncoder.matches(dto.password(), patient.getPassword())){
+        if (!passwordEncoder.matches(dto.password(), patient.getPersonalData().getPassword())){
             throw new BadCredentialsException("Wrong password!");
         }
-        return jwtUtil.generateToken(dto.emai());
+        return jwtUtil.generateToken(dto.email());
     }
     public Patient loadByEmail(String email){
         return patientRepository.findByPersonalDataEmail(email)

@@ -13,11 +13,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
+@Where(clause = "is_deleted = false")
 public class Patient implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -119,7 +121,7 @@ public class Patient implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.personalData.getPassword();
+        return personalData.getPassword();
     }
 
     @Override

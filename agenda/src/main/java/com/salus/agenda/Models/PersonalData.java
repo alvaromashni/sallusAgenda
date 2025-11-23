@@ -8,14 +8,15 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Embeddable
 public class PersonalData {
-    @Column(unique = true, nullable = false)
+    @Column( nullable = false)
     @NotBlank(message = "Field name can not be blank")
     private String name;
     @Column(unique = true, nullable = false)
-    @Pattern(regexp = "\\d{11}", message = "Cpf must have exactly 11 digits")
+    @CPF(message = "Invalid cpf format!")
     private String cpf;
     @Email(message = "Invalid email format!")
     @NotBlank(message = "Email field can not be blank!")

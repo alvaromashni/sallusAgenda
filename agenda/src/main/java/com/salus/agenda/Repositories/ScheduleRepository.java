@@ -37,4 +37,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
         @Modifying
         @Query("UPDATE Schedule s SET s.isDeleted = true, s.deletedAt = CURRENT_TIMESTAMP where s.idSchedule= :idSchedule")
         void softDeleteById(@Param("idSchedule") Long id);
+        boolean existsByConsultationTime(LocalTime hour);
 }

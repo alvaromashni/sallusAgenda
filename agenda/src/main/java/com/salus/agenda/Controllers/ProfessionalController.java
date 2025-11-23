@@ -48,5 +48,10 @@ public class ProfessionalController {
         professionalUserService.deleteProfessionalHours(id, dto);
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/{id}/findAllHours")
+    public ResponseEntity<?>findAllProfessionalHours(@PathVariable UUID id){
+       return ResponseEntity.ok(professionalUserService.findAllProfessionalHours(id));
+
+    }
 
 }

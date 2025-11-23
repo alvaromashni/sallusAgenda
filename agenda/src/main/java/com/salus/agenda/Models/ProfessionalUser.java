@@ -15,11 +15,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
+@Where(clause = "is_deleted = false")
 public class ProfessionalUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -40,11 +42,14 @@ public class ProfessionalUser implements UserDetails {
     private Boolean isDeleted = false;
     private LocalDateTime deletedAt;
     private String role = "USER";
+    @Embedded
+    private Hours hours;
     @OneToMany(mappedBy = "professionalUser")
     @JsonIgnore
     private List<Schedule> schedules;
-    @Embedded
-    private Hours hours;
+    @OneToMany(mappedBy = "professionalUser")
+    @JsonIgnore
+    private List<ConsultationLink> consultationLinks;
 
     public ProfessionalUser(PersonalData personalData, String crm, String occupation, String expertise,
             List<Schedule> schedules, UUID idProfessionalUser, LocalDateTime createdAt, boolean active,

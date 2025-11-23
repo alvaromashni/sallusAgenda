@@ -41,16 +41,16 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PutMapping("delete/softDelete/{id}")
+    @PutMapping("/delete/softDelete/{id}")
     public ResponseEntity<?> softDelete(@PathVariable Long id) {
         scheduleService.softDeleteSchedule(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/isScheduled/{id}")
-    public ResponseEntity<?> isScheduled(@RequestParam LocalDate day, @PathVariable UUID professionalUserId) {
+    public ResponseEntity<?> isScheduled(@RequestParam LocalDate day, @PathVariable UUID id) {
 
-        return ResponseEntity.ok(scheduleService.isScheduledForTheDay(professionalUserId, day));
+        return ResponseEntity.ok(scheduleService.isScheduledForTheDay(id, day));
     }
 
     @GetMapping("/findSchedule/{id}")
