@@ -69,7 +69,7 @@ public class Admin implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE" + this.getRole()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.getRole()));
     }
 
     public String getPassword() {
