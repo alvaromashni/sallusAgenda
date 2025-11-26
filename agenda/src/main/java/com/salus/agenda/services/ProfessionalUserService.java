@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 import com.salus.agenda.dtos.request.HoursRequestDto;
+import com.salus.agenda.dtos.response.ProfessionalDataResponseDto;
 import com.salus.agenda.dtos.response.ProfessionalResponseDto;
 import com.salus.agenda.models.Hours;
 import com.salus.agenda.repositories.ScheduleRepository;
