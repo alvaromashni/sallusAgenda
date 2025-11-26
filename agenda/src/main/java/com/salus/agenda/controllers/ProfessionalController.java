@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.salus.agenda.dtos.request.HoursRequestDto;
+import com.salus.agenda.dtos.response.ProfessionalDataResponseDto;
 import com.salus.agenda.dtos.response.ProfessionalResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,9 @@ public class ProfessionalController {
     public ResponseEntity<List<ProfessionalResponseDto>> findAllProfessional(){
         return ResponseEntity.ok(professionalUserService.listAllProfessional());
     }
-
+    @GetMapping("/findProfessionalData/{id}")
+    public ResponseEntity<ProfessionalDataResponseDto>findProfessionalData(@PathVariable UUID id){
+        return ResponseEntity.ok(professionalUserService.findProfessionalData(id));
+    }
 
 }

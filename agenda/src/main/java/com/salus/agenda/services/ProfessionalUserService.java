@@ -108,4 +108,9 @@ public class ProfessionalUserService {
                 .toList();
 
     }
+    public ProfessionalDataResponseDto findProfessionalData(UUID id){
+        ProfessionalUser professionalUser = professionalRepository
+                .findById(id).orElseThrow(()->new ResourceNotFoundException("Professional not found!"));
+        return new ProfessionalDataResponseDto(professionalUser.getPersonalData());
+    }
 }
