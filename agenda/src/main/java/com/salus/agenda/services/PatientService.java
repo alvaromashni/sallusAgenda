@@ -2,6 +2,8 @@ package com.salus.agenda.services;
 
 import java.util.UUID;
 
+import com.salus.agenda.dtos.response.PatientDataResponseDto;
+import com.salus.agenda.dtos.response.ProfessionalDataResponseDto;
 import com.salus.agenda.exceptions.DataConflictException;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,8 +33,6 @@ public class PatientService {
             throw new DataConflictException("This cpf has already been registered!");
         } else if (patientRepository.existsByPersonalDataEmail(requestDto.personalData().getEmail())) {
             throw new DataConflictException("This email has already been registered!");
-        } else if (patientRepository.existsByPersonalDataName(requestDto.personalData().getName())) {
-            throw new DataConflictException("This name has already been registered!");
         }else if (patientRepository.existsByPersonalData_PhoneNumber(requestDto.personalData().getPhoneNumber())){
             throw new DataConflictException("This phone number has already been registered");
         }
@@ -55,6 +55,12 @@ public class PatientService {
             throw new ResourceNotFoundException("Patient not found!");
         }
         patientRepository.softDeleteById(id);
+    }
+
+    public PatientDataResponseDto findPatientData(UUID id) {
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
+        return new PatientDataResponseDto(patient.getPersonalData());
     }
 
 }

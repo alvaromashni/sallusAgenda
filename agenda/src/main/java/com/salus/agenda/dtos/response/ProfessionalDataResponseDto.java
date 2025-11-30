@@ -2,5 +2,5 @@ package com.salus.agenda.dtos.response;
 
 import com.salus.agenda.models.PersonalData;
 
-public record ProfessionalDataResponseDto(PersonalData professionalData) {
+public record ProfessionalDataResponseDto(PersonalData professionalData, String expertise, String occupation) {
 }

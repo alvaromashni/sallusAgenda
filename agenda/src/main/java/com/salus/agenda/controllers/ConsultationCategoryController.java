@@ -1,16 +1,13 @@
 package com.salus.agenda.controllers;
 
+import com.salus.agenda.dtos.response.CategoryResponseDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.salus.agenda.models.ConsultationCategory;
 import com.salus.agenda.services.ConsultationCategoryService;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import java.util.List;
 
 @RestController
 @RequestMapping("/category")
@@ -32,6 +29,10 @@ public class ConsultationCategoryController {
         consultationCategoryService.hardDeleteConsultationCategory(id);
         return ResponseEntity.ok().build();
 
+    }
+    @GetMapping("/findAll")
+    public ResponseEntity<List<CategoryResponseDto>> findAll(){
+        return ResponseEntity.ok(consultationCategoryService.findAllCategory());
     }
 
 

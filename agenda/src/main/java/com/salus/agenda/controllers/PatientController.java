@@ -1,5 +1,6 @@
 package com.salus.agenda.controllers;
 
+import com.salus.agenda.dtos.response.PatientDataResponseDto;
 import com.salus.agenda.dtos.response.PatientResponseDto;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/patient")
@@ -45,5 +47,10 @@ public class PatientController {
 
         patientService.softDeletePatient(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/findPatientData/{id}")
+    public ResponseEntity<PatientDataResponseDto> findPatientData(@PathVariable UUID id) {
+        return ResponseEntity.ok(patientService.findPatientData(id));
     }
 }

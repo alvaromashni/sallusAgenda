@@ -11,7 +11,7 @@ public record ScheduleRequestDto(
                 @NotNull(message = "The consultation date can not be null!") LocalDate consultationDate,
                 @NotNull(message = "The consultation time can not be null!") LocalTime consultationTime,
                 @NotBlank(message = "The consultation description can not be null!") String consultationDescription,
-                @NotBlank(message = "The consultation category id can not be null!") Long consultationCategoryId,
+                @NotBlank(message = "The consultation category id can not be null!") String categoryName,
                 @NotBlank(message = "The patient id can not be null!") UUID patientId,
                 @NotBlank(message = "The professional user id can not be null!") UUID professionalUserId) {
 

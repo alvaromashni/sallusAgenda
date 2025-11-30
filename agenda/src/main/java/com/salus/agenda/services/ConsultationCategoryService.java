@@ -1,11 +1,14 @@
 package com.salus.agenda.services;
 
+import com.salus.agenda.dtos.response.CategoryResponseDto;
 import org.springframework.stereotype.Service;
 
 import com.salus.agenda.exceptions.DataConflictException;
 import com.salus.agenda.exceptions.ResourceNotFoundException;
 import com.salus.agenda.models.ConsultationCategory;
 import com.salus.agenda.repositories.ConsultationCategoryRepository;
+
+import java.util.List;
 
 @Service
 public class ConsultationCategoryService {
@@ -29,5 +32,11 @@ public class ConsultationCategoryService {
             throw new ResourceNotFoundException("Categoria não encontrada!");
         }
         consultationCategoryRepository.deleteById(id);
+    }
+    public List<CategoryResponseDto> findAllCategory(){
+        return consultationCategoryRepository.findAll().stream()
+                .map(category -> new CategoryResponseDto(category.getIdConsultationCategory(), category.getCategoryName()))
+                .toList();
+
     }
 }

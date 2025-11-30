@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.salus.agenda.models.ConsultationCategory;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -56,9 +57,7 @@ public class ScheduleService {
                 .orElseThrow(() -> new ResourceNotFoundException("Professional not found!"));
         Patient patient = patientRepository.findById(newSchedule.patientId())
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found!"));
-        if (!consultationCategoryRepository.existsById(newSchedule.consultationCategoryId())) {
-            throw new ResourceNotFoundException("Categoria não encontrada!");
-        }
+        ConsultationCategory category = consultationCategoryRepository.findByCategoryName(newSchedule.categoryName());
         if (hasConflict(professional, newSchedule.consultationDate(), newSchedule.consultationTime())) {
             throw new ScheduleConflictException("This time slot is already booked!");
         }
