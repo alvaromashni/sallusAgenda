@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                                 "/patient/register",
                                 "/professional/register",
                                 "/professional/findAllHours/**",
+                                "/category/findAll",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
