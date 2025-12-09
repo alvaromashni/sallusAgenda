@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
-                                "/webjars/**","/professional/register").permitAll()
+                                "/webjars/**","/professional/register", "/professional/findProfessionalData/**").permitAll()
                         .requestMatchers(
                                 "/professional/**",
                                 "/consultationLink/generate",
